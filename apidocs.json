@@ -1,0 +1,854 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Kasir",
+        "description": "Daftar API Kasir",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "https://api.zackym.com",
+            "description": "API UKK"
+        }
+    ],
+    "components":{
+    "securitySchemes": {
+        "bearerAuth": {
+          "type": "http",
+          "scheme": "bearer",
+            "bearerFormat": "JWT"
+        }
+    }
+      },
+    "tags": [
+        {
+            "name": "User",
+            "description": "User"
+        },
+        {
+            "name": "Image",
+            "description": "Image"
+        },
+        {
+            "name": "Menu",
+            "description": "Menu"
+        },
+        {
+            "name": "Meja",
+            "description": "Meja"
+        },
+        {
+            "name": "Transaksi",
+            "description": "Transaksi"
+        },
+        {
+            "name": "Statistik",
+            "description": "Statistik"
+        }
+    ],
+    "paths":{
+        "/user":{
+            "get":{
+                "tags":[
+                    "User"
+                ],
+                "summary": "Get All User",
+                "description":"",
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ],
+              "tags": [
+                "User"
+              ],
+              "summary": "Register User",
+              "consumes": "application/x-www-form-urlencoded",
+              "requestBody": {
+                "content": {
+                  "application/x-www-form-urlencoded": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "nama_user": {
+                          "type": "string"
+                        },
+                        "username": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        },
+                        "password": {
+                          "type": "string"
+                        },
+                        "role": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": true 
+            },
+              "responses": {
+                "200": {
+                  "description": "Sukses"
+                }
+              }
+            }
+        },
+        "/login":{
+        "post":{
+            "tags":[
+                "User"
+            ],
+            "summary": "Login User",
+            "consumes":"application/x-www-form-urlencoded",
+            "requestBody":{
+                "content":{
+                    "application/x-www-form-urlencoded":{
+                        "schema":{
+                            "type":"object",
+                            "properties":{
+                                "email":{
+                                    "type":"string"
+                                },
+                                "password":{
+                                    "type":"string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "responses":{
+                "200":{
+                    "description": "Sukses"
+                }
+            }
+    }
+        },
+        "/user/{id_user}":{
+            "get":{
+                "tags":[
+                    "User"
+                ],
+                "summary": "Get One User",
+                "description":"",
+                "parameters":[
+                    {
+                        "in":"path",
+                        "name":"id_user",
+                        "schema":{
+                            "type":"integer"
+                        },
+                        "description":"id User"
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            },
+            "delete":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+              "tags":[
+                  "User"
+              ],
+              "summary": "Delete One User",
+              "description":"",
+              "parameters":[
+                  {
+                      "in":"path",
+                      "name":"id_user",
+                      "schema":{
+                          "type":"integer"
+                      },
+                      "description":"id User"
+                  }
+              ],
+              "responses":{
+                  "200":{
+                      "description": "Sukses"
+                  }
+              }
+          }
+        },
+        "/gambar/{filename}":{
+            "get":{
+                "tags":[
+                    "Image"
+                ],
+                "summary": "Get Image",
+                "description":"",
+                "parameters":[
+                    {
+                        "in":"path",
+                        "name":"filename",
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description":"filename"
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            }
+        },
+        "/menu":{
+            "get":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    },
+                    {
+                        "x-access-ip": []
+                    }
+                  ],
+                "tags":[
+                    "Menu"
+                ],
+                "summary": "Get All Menu",
+                "description":"",
+                "parameters":[
+                    {
+                        "in":"query",
+                        "name":"search",
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description":"Search by nama_menu"
+                    },
+                    {
+                        "in":"query",
+                        "name":"jenis",
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description":"Search by jenis"
+                    },
+                    {
+                        "in":"query",
+                        "name":"harga",
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description":"Order by Harga"
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            },
+            "post":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+                "tags":[
+                    "Menu"
+                ],
+                "summary": "Add Some Menu",
+                "consumes":"multipart/form-data",
+                "requestBody":{
+                "content":{
+                    "multipart/form-data":{
+                        "schema":{
+                            "type":"object",
+                            "properties":{
+                                "nama_menu":{
+                                    "type":"string"
+                                },
+                                "jenis":{
+                                    "type":"string"
+                                },
+                                "deskripsi":{
+                                    "type":"string"
+                                },
+                                "gambar":{
+                                    "type":"string",
+                                    "format":"binary"
+                                },
+                                "harga":{
+                                    "type":"string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            }
+        },
+        "/menu/{id_menu}":{
+            "get":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+                "tags":[
+                    "Menu"
+                ],
+                "summary": "Get One Menu",
+                "description":"",
+                "parameters":[
+                    {
+                        "in":"path",
+                        "name":"id_menu",
+                        "schema":{
+                            "type":"integer"
+                        },
+                        "description":"id Menu"
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            },
+            "put":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+                "tags":[
+                    "Menu"
+                ],
+                "summary": "Update Menu",
+                "consumes":"multipart/form-data",
+                "parameters":[
+                    {
+                        "in":"path",
+                        "name":"id_menu",
+                        "schema":{
+                            "type":"integer"
+                        },
+                        "description":"id Menu"
+                    }
+                ],
+                "requestBody":{
+                "content":{
+                    "multipart/form-data":{
+                        "schema":{
+                            "type":"object",
+                            "properties":{
+                                "nama_menu":{
+                                    "type":"string"
+                                },
+                                "jenis":{
+                                    "type":"string"
+                                },
+                                "deskripsi":{
+                                    "type":"string"
+                                },
+                                "gambar":{
+                                    "type":"string",
+                                    "format":"binary"
+                                },
+                                "harga":{
+                                    "type":"string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            },
+            "delete":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+              "tags":[
+                  "Menu"
+              ],
+              "summary": "Delete One Menu",
+              "description":"",
+              "parameters":[
+                  {
+                      "in":"path",
+                      "name":"id_menu",
+                      "schema":{
+                          "type":"integer"
+                      },
+                      "description":"id Menu"
+                  }
+              ],
+              "responses":{
+                  "200":{
+                      "description": "Sukses"
+                  }
+              }
+          }
+        },
+        "/meja":{
+            "get":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    },
+                    {
+                        "x-access-ip": []
+                    }
+                  ],
+                "tags":[
+                    "Meja"
+                ],
+                "summary": "Get All Meja",
+                "description":"",
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            },
+            "post":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+                "tags":[
+                    "Meja"
+                ],
+                "summary": "Add Some Meja",
+                "consumes":"multipart/form-data",
+                "requestBody":{
+                "content":{
+                    "multipart/form-data":{
+                        "schema":{
+                            "type":"object",
+                            "properties":{
+                                "nomor_meja":{
+                                    "type":"string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            }
+        },
+        "/meja/{id_meja}":{
+            "get":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+                "tags":[
+                    "Meja"
+                ],
+                "summary": "Get One Meja",
+                "description":"",
+                "parameters":[
+                    {
+                        "in":"path",
+                        "name":"id_meja",
+                        "schema":{
+                            "type":"integer"
+                        },
+                        "description":"id Meja"
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            },
+            "put":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+                "tags":[
+                    "Meja"
+                ],
+                "summary": "Update Meja",
+                "consumes":"multipart/form-data",
+                "parameters":[
+                    {
+                        "in":"path",
+                        "name":"id_meja",
+                        "schema":{
+                            "type":"integer"
+                        },
+                        "description":"id Meja"
+                    }
+                ],
+                "requestBody":{
+                "content":{
+                    "multipart/form-data":{
+                        "schema":{
+                            "type":"object",
+                            "properties":{
+                                "nomor_meja":{
+                                    "type":"string"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            },
+            "delete":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+              "tags":[
+                  "Meja"
+              ],
+              "summary": "Delete One Meja",
+              "description":"",
+              "parameters":[
+                  {
+                      "in":"path",
+                      "name":"id_meja",
+                      "schema":{
+                          "type":"integer"
+                      },
+                      "description":"id Meja"
+                  }
+              ],
+              "responses":{
+                  "200":{
+                      "description": "Sukses"
+                  }
+              }
+          }
+        },
+        "/meja/available/{id_meja}":{
+            "put":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+                "tags":[
+                    "Meja"
+                ],
+                "summary": "Update Available Meja",
+                "consumes":"multipart/form-data",
+                "parameters":[
+                    {
+                        "in":"path",
+                        "name":"id_meja",
+                        "schema":{
+                            "type":"integer"
+                        },
+                        "description":"id Meja"
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            }
+        },
+        "/transaksi":{
+            "get":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+                "tags":[
+                    "Transaksi"
+                ],
+                "summary": "Get All Transaksi",
+                "description":"",
+                "parameters":[
+                    {
+                        "in":"query",
+                        "name":"tgl_awal",
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description":"Search by tgl_awal (YYYY-MM-DD)"
+                    },
+                    {
+                        "in":"query",
+                        "name":"tgl_akhir",
+                        "schema":{
+                            "type":"string"
+                        },
+                        "description":"Search by tgl_akhir (YYYY-MM-DD)"
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            },
+            "post":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+                "tags":[
+                    "Transaksi"
+                ],
+                "summary": "Add Some Transaksi",
+                "consumes":"multipart/form-data",
+                "requestBody":{
+                "content":{
+                    "multipart/form-data":{
+                        "schema":{
+                            "type":"object",
+                            "properties":{
+                                "id_meja":{
+                                    "type":"integer"
+                                },
+                                "nama_pelanggan":{
+                                    "type":"string"
+                                },
+                                "status":{
+                                    "type":"string"
+                                },
+                                "barang1":{
+                                    "type":"integer"
+                                },
+                                "barang2":{
+                                    "type":"integer"
+                                },
+                                "barang3":{
+                                    "type":"integer"
+                                },
+                                "barang4":{
+                                    "type":"integer"
+                                },
+                                "barang5":{
+                                    "type":"integer"
+                                },
+                                "barang6":{
+                                    "type":"integer"
+                                },
+                                "barang7":{
+                                    "type":"integer"
+                                },
+                                "barang8":{
+                                    "type":"integer"
+                                },
+                                "barang9":{
+                                    "type":"integer"
+                                },
+                                "barang10":{
+                                    "type":"integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            }
+        },
+        "/transaksi/{id_transaksi}":{
+            "get":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+                "tags":[
+                    "Transaksi"
+                ],
+                "summary": "Get One Transaksi",
+                "description":"",
+                "parameters":[
+                    {
+                        "in":"path",
+                        "name":"id_transaksi",
+                        "schema":{
+                            "type":"integer"
+                        },
+                        "description":"id Transaksi"
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            },
+            "put":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+                "tags":[
+                    "Transaksi"
+                ],
+                "summary": "Update Transaksi",
+                "consumes":"multipart/form-data",
+                "parameters":[
+                    {
+                        "in":"path",
+                        "name":"id_transaksi",
+                        "schema":{
+                            "type":"integer"
+                        },
+                        "description":"id Transaksi"
+                    }
+                ],
+                "requestBody":{
+                "content":{
+                    "multipart/form-data":{
+                        "schema":{
+                            "type":"object",
+                            "properties":{
+                                "id_meja":{
+                                    "type":"integer"
+                                },
+                                "nama_pelanggan":{
+                                    "type":"string"
+                                },
+                                "status":{
+                                    "type":"string"
+                                },
+                                "barang1":{
+                                    "type":"integer"
+                                },
+                                "barang2":{
+                                    "type":"integer"
+                                },
+                                "barang3":{
+                                    "type":"integer"
+                                },
+                                "barang4":{
+                                    "type":"integer"
+                                },
+                                "barang5":{
+                                    "type":"integer"
+                                },
+                                "barang6":{
+                                    "type":"integer"
+                                },
+                                "barang7":{
+                                    "type":"integer"
+                                },
+                                "barang8":{
+                                    "type":"integer"
+                                },
+                                "barang9":{
+                                    "type":"integer"
+                                },
+                                "barang10":{
+                                    "type":"integer"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            },
+            "delete":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+              "tags":[
+                  "Transaksi"
+              ],
+              "summary": "Delete One Transaksi",
+              "description":"",
+              "parameters":[
+                  {
+                      "in":"path",
+                      "name":"id_transaksi",
+                      "schema":{
+                          "type":"integer"
+                      },
+                      "description":"id Transaksi"
+                  }
+              ],
+              "responses":{
+                  "200":{
+                      "description": "Sukses"
+                  }
+              }
+          }
+        },
+        "/Statistik":{
+            "get":{
+                "security": [
+                    {
+                      "bearerAuth": []
+                    }
+                  ],
+                "tags":[
+                    "Statistik"
+                ],
+                "summary": "Get Statistik",
+                "description":"",
+                "responses":{
+                    "200":{
+                        "description": "Sukses"
+                    }
+                }
+            }
+        }
+    }
+}
